@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 30px;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sentiment Analysis</h1>
+    <form id="sentimentForm">
+        <textarea id="textInput" name="text" placeholder="Enter text for sentiment analysis"></textarea>
+        <input type="submit" value="Analyze">
+    </form>
+    <div id="result" class="result"></div>
+
+    <script>
+        document.getElementById("sentimentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch("/analyze", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerHTML = "<strong>Sentiment:</strong> " + data.sentiment;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("result").innerHTML = "<strong>Error:</strong> " + error;
+            });
+        });
+    </script>
+</body>
+</html>
